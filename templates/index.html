@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
+		
+		<title>Wheater Prediction - Mini Project</title>
+
+		<!-- Loading third party fonts -->
+		<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700|" rel="stylesheet" type="text/css">
+		<link href="fonts/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+		<!-- Loading main css file -->
+		<link rel="stylesheet" href="../static/assets/css/style.css">
+		<style>
+		.hide{
+			display: none;
+		}
+		</style>
+	</head>
+
+
+	<body>
+		<div class="site-content hero-img2">
+			<div class="site-header">
+				<div class="container">
+					<a href="/" class="branding">
+						<img src="../static/images/logo.png" alt="" class="logo">
+						<div class="logo-type">
+							<h1 class="section-title">Weather Prediction</h1>
+						</div>
+					</a>
+
+					<!-- Default snippet for navigation -->
+					<div class="main-navigation">
+						<button type="button" class="menu-toggle"><i class="fa fa-bars"></i></button>
+						<ul class="menu">
+							<li class="menu-item current-menu-item"><a href="/">Home</a></li>
+							<li class="menu-item"><a href="contact">Contact</a></li>
+						</ul> <!-- .menu -->
+					</div> <!-- .main-navigation -->
+
+					<div class="mobile-navigation"></div>
+
+				</div>
+			</div> <!-- .site-header -->
+
+			<div class="hero">
+				<div class="container">
+						<div class="samrin ">
+							<!-- <button onclick="city()">Search by City</button> -->
+							<input type="button" value="Search By City" class="button" id="city">
+							<input type="button" value="Predict By Model" class="button" id="model">
+							<br>
+							<div class="hide" id="mycity">
+									<form method="POST" >
+										<input type="text" name="city">
+										<input type="submit" value="Submit">
+									</form>
+							</div>
+							<div class="hide" id="mymodel">
+								<form method="POST" action="{{url_for('model')}}">
+									<input type="date" name="date">
+									<input type="submit" value="Submit">
+								</form>
+							</div>
+						</div>
+				</div>
+			</div>
+			{% if request.method == 'POST' %}
+			<div class="forecast-table">
+				<div class="container">
+					<div class="forecast-container">
+						{% for city in city_data['list'] %}
+						<div class="today forecast">
+							<div class="forecast-header">
+								<div class="day">{{"day"}}</div>
+								<div class="date">{{city['dt_txt']}}</div>
+							</div> <!-- .forecast-header -->
+							<div class="forecast-content">
+								<div class="location">{{city_data['city']['name']}}</div>
+								<div class="degree">
+									<div class="num">{{ (city['main']['temp'] - 273.15)|int }}<sup>o</sup>C</div>
+									<div class="forecast-icon">
+										<img src="../static/images/icons/icon-1.svg" alt="" width=90>
+									</div>
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+			{% endif %}
+		<script src="../static/js/jquery-1.11.1.min.js"></script>
+		<script src="../static/js/plugins.js"></script>
+		<script src="../static/js/app.js"></script>
+<script>
+		$( document ).ready(function() {
+			$("#city").click(function () {
+				$("#mycity").removeClass("hide");
+				$('#mycity').addClass("show");
+			  });
+		});
+</script>
+<script>
+	$( document ).ready(function() {
+		$("#model").click(function () {
+			$("#mymodel").removeClass("hide");
+			$('#mymodel').addClass("show");
+		  });
+	});
+</script>
+	</body>
+
+</html>
